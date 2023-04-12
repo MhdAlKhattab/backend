@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('withdraws', function (Blueprint $table) {
+        Schema::create('infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('wallet');
-            $table->double('amount');
-            $table->string('method');
-            $table->integer('state')->default(0);
+            $table->string('referral_link');
+            $table->double('Deposit_balance');
+            $table->double('interest_balance');
+            $table->double('total_invest');
+            $table->double('total_deposit');
+            $table->double('total_withdraw');
+            $table->double('referral_earning');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('withdraws');
+        Schema::dropIfExists('infos');
     }
 };

@@ -14,7 +14,7 @@ class Withdraw extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['user_id', 'wallet'];
+    protected $fillable = ['user_id', 'wallet', 'amount', 'method', 'state'];
 
     public function User(): BelongsTo
     {

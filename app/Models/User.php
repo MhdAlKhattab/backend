@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 class User extends Authenticatable
@@ -57,5 +58,10 @@ class User extends Authenticatable
     public function withdraws(): HasMany
     {
         return $this->hasMany(Withdraw::class,'user_id');
+    }
+
+    public function info(): HasOne
+    {
+        return $this->hasOne(Info::class);
     }
 }
