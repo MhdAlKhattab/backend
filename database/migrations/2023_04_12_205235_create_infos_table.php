@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('referral_link');
-            $table->double('Deposit_balance');
-            $table->double('interest_balance');
-            $table->double('total_invest');
-            $table->double('total_deposit');
-            $table->double('total_withdraw');
-            $table->double('referral_earning');
+            $table->string('referral_link')->default('');
+            $table->double('Deposit_balance')->default(0);
+            $table->double('interest_balance')->default(0);
+            $table->double('total_invest')->default(0);
+            $table->double('total_deposit')->default(0);
+            $table->double('total_withdraw')->default(0);
+            $table->double('referral_earning')->default(0);
             $table->timestamps();
         });
     }
