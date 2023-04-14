@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\DepositController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,6 @@ Route::post('/login',[AuthController::class,'login']);
 // Admin
 Route::post('/super-admin',[AuthController::class,'addSuperAdmin']);
 
-
 Route::group(['middleware' => 'auth:api'], function(){
     
     /////////////////////////// Auth
@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
     /////////////////////////// Info
     Route::get('/info',[InfoController::class,'index']);
+
 
     /////////////////////////// Deposit
     // User

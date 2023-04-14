@@ -53,7 +53,7 @@ class AuthController extends Controller
     public function addAdmin(Request $request)
     {
         $permission = Auth::user()->permission;
-        if(permission != 2){
+        if($permission != 2){
             return response()->json(['data' => "Access Denied"]); 
         }
 
@@ -84,14 +84,14 @@ class AuthController extends Controller
     public function deleteAdmin($id)
     {
         $permission = Auth::user()->permission;
-        if(permission != 2){
+        if($permission != 2){
             return response()->json(['data' => "Access Denied"]); 
         }
         
         $user = User::find($id);
 
         if(!$user){
-            return response()->json(['data' => 'There is no deposit with this id !']);
+            return response()->json(['data' => 'There is no admin with this id !']);
         }
 
         $user->delete();

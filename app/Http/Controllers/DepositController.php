@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Deposit;
 use App\Models\Info;
+use App\Models\User;
 
 class DepositController extends Controller
 {
     public function getAllDeposits()
     {
         $permission = Auth::user()->permission;
-        if(permission != 1 and permission != 2){
+        if($permission != 1 and $permission != 2){
             return response()->json(['data' => "Access Denied"]);   
         }
 
@@ -24,7 +25,7 @@ class DepositController extends Controller
     public function getAllPenddingDeposits()
     {
         $permission = Auth::user()->permission;
-        if(permission != 1 and permission != 2){
+        if($permission != 1 and $permission != 2){
             return response()->json(['data' => "Access Denied"]);   
         }
 
@@ -35,7 +36,7 @@ class DepositController extends Controller
     public function getAllCompleteDeposits()
     {
         $permission = Auth::user()->permission;
-        if(permission != 1 and permission != 2){
+        if($permission != 1 and $permission != 2){
             return response()->json(['data' => "Access Denied"]);   
         }
 
@@ -46,7 +47,7 @@ class DepositController extends Controller
     public function getAllCanceledDeposits()
     {
         $permission = Auth::user()->permission;
-        if(permission != 1 and permission != 2){
+        if($permission != 1 and $permission != 2){
             return response()->json(['data' => "Access Denied"]);   
         }
         
@@ -90,6 +91,7 @@ class DepositController extends Controller
             'proccess_id' => $request['proccess_id'],
             'amount' => $request['amount'],
             'method' => $request['method'],
+            'photo' => ''
         ]);
 
         if ($request->hasFile('photo')) {
@@ -128,15 +130,19 @@ class DepositController extends Controller
             return response()->json(['data' => 'There is no deposit with this id !']);
         }
 
+        if($deposit->state != 0){
+            return response()->json(['data' => 'You cant do that']);
+        }
+
         $deposit->state = 1;
         $deposit->save();
 
-        $info = Info::where('user_id', Auth::user()->id)->get();
+        $info = Info::where('user_id', Auth::user()->id)->first();
         $info->Deposit_balance += $deposit->amount;
         $info->total_deposit += $deposit->amount;
         $info->save();
 
-        return response()->json(['data' => "Deposit Accept"]);   
+        return response()->json(['data' => "Deposit Accept"]);
     }
 
     public function cancel($id)
@@ -145,6 +151,10 @@ class DepositController extends Controller
 
         if(!$deposit){
             return response()->json(['data' => 'There is no deposit with this id !']);
+        }
+
+        if($deposit->state != 0){
+            return response()->json(['data' => 'You cant do that']);
         }
 
         $deposit->state = 2;

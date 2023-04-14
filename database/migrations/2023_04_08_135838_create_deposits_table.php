@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('photo');
             $table->string('wallet');
-            $table->string('proccess_id')->unique();
+            $table->string('proccess_id');
             $table->double('amount');
             $table->string('method');
             $table->integer('state')->default(0);
