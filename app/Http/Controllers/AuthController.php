@@ -24,6 +24,80 @@ class AuthController extends Controller
         ]);
     }
 
+    public function addSuperAdmin(Request $request)
+    {
+        $validatedData = $this->validator($request->all());
+        if ($validatedData->fails())  {
+            return response()->json(['errors'=>$validatedData->errors()]);
+        }
+
+        $user = User::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'user_name' => $request['user_name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'phone_number' => $request['phone_number'],
+            'permission' => 2
+        ]);
+        $user->save();
+
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
+    public function addAdmin(Request $request)
+    {
+        $permission = Auth::user()->permission;
+        if(permission != 2){
+            return response()->json(['data' => "Access Denied"]); 
+        }
+
+        $validatedData = $this->validator($request->all());
+        if ($validatedData->fails())  {
+            return response()->json(['errors'=>$validatedData->errors()]);
+        }
+
+        $user = User::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'user_name' => $request['user_name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'phone_number' => $request['phone_number'],
+            'permission' => 1
+        ]);
+        $user->save();
+
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
+    public function deleteAdmin($id)
+    {
+        $permission = Auth::user()->permission;
+        if(permission != 2){
+            return response()->json(['data' => "Access Denied"]); 
+        }
+        
+        $user = User::find($id);
+
+        if(!$user){
+            return response()->json(['data' => 'There is no deposit with this id !']);
+        }
+
+        $user->delete();
+        return response()->json(['data' => "Admin Deleted"]);
+    }
+
     public function register(Request $request)
     {
         $validatedData = $this->validator($request->all());
