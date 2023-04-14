@@ -124,6 +124,11 @@ class DepositController extends Controller
 
     public function accept($id)
     {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"]);   
+        }
+        
         $deposit = Deposit::find($id);
 
         if(!$deposit){
@@ -137,7 +142,7 @@ class DepositController extends Controller
         $deposit->state = 1;
         $deposit->save();
 
-        $info = Info::where('user_id', Auth::user()->id)->first();
+        $info = Info::where('user_id', $deposit->user_id)->first();
         $info->Deposit_balance += $deposit->amount;
         $info->total_deposit += $deposit->amount;
         $info->save();
@@ -147,6 +152,11 @@ class DepositController extends Controller
 
     public function cancel($id)
     {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"]);   
+        }
+
         $deposit = Deposit::find($id);
 
         if(!$deposit){
@@ -165,6 +175,11 @@ class DepositController extends Controller
 
     public function destroy($id)
     {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"]);   
+        }
+
         $deposit = Deposit::find($id);
 
         if(!$deposit){

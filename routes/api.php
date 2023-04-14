@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\WithdrawController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,21 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/accept-deposit/{id}',[DepositController::class,'accept']);
     Route::post('/cancel-deposit/{id}',[DepositController::class,'cancel']);
     Route::delete('/delete-deposit/{id}',[DepositController::class,'destroy']);
+
+
+    /////////////////////////// Withdraw
+    // User
+    Route::get('/get-panel-withdraws',[WithdrawController::class,'getPanelWithdraws']);
+    Route::get('/get-user-withdraws',[WithdrawController::class,'getUserWithdraws']);
+    Route::post('/add-withdraw',[WithdrawController::class,'store']);
+    // Admin
+    Route::get('/get-all-withdraws',[WithdrawController::class,'getAllWithdraws']);
+    Route::get('/get-pending-withdraws',[WithdrawController::class,'getAllPenddingWithdraws']);
+    Route::get('/get-complate-withdraws',[WithdrawController::class,'getAllCompleteWithdraws']);
+    Route::get('/get-canceled-withdraws',[WithdrawController::class,'getAllCanceledWithdraws']);
+    Route::post('/accept-withdraw/{id}',[WithdrawController::class,'accept']);
+    Route::post('/cancel-withdraw/{id}',[WithdrawController::class,'cancel']);
+    Route::delete('/delete-withdraw/{id}',[WithdrawController::class,'destroy']);
 });
 
 
