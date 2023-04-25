@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('plan_name');
             $table->double('amount');
-            $table->double('return_amount');
+            $table->double('return_percent');
             $table->string('return_period');
             $table->integer('number_returned')->default(0);
             $table->integer('total_returned');

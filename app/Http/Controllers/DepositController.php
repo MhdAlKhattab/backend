@@ -140,6 +140,7 @@ class DepositController extends Controller
         }
 
         $deposit->state = 1;
+        $deposit->message = 'Process Finished';
         $deposit->save();
 
         $info = Info::where('user_id', $deposit->user_id)->first();
@@ -150,7 +151,7 @@ class DepositController extends Controller
         return response()->json(['data' => "Deposit Accept"]);
     }
 
-    public function cancel($id)
+    public function cancel($id, Request $request)
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
@@ -167,7 +168,10 @@ class DepositController extends Controller
             return response()->json(['data' => 'You cant do that']);
         }
 
+        
+
         $deposit->state = 2;
+        $deposit->message = $request['message'];
         $deposit->save();
 
         return response()->json(['data' => "Deposit Canceled"]);   

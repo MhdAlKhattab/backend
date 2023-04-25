@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('proccess_id');
             $table->double('amount');
             $table->string('method');
+            $table->longText('message')->default('Please Wait For Processing!');
             $table->integer('state')->default(0);
             $table->timestamps();
         });

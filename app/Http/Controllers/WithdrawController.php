@@ -88,11 +88,16 @@ class WithdrawController extends Controller
             return response()->json(['data' => 'You dont have enough money!']);
         }
 
+        $charge = ($request['amount'] * 2) / 100.0;
+        $receivable = $request['amount'] - $charge;
+
         $withdraw = Withdraw::create([
             'user_id' => Auth::user()->id,
             'wallet' => $request['wallet'],
             'amount' => $request['amount'],
             'method' => $request['method'],
+            'charge' => $charge,
+            'receivable' => $receivable,
         ]);
         $withdraw->save();
 
@@ -121,12 +126,13 @@ class WithdrawController extends Controller
         }
 
         $withdraw->state = 1;
+        $withdraw->message = 'Process Finished';
         $withdraw->save();
 
         return response()->json(['data' => "Withdraw Accept"]);
     }
 
-    public function cancel($id)
+    public function cancel($id, Request $request)
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
@@ -144,6 +150,7 @@ class WithdrawController extends Controller
         }
 
         $withdraw->state = 2;
+        $withdraw->message = $request['message'];
         $withdraw->save();
 
         $info = Info::where('user_id', $withdraw->user_id)->first();

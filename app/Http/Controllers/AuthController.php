@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use App\Models\User;
 use App\Models\Info;
 
@@ -24,11 +25,44 @@ class AuthController extends Controller
         ]);
     }
 
+    protected function emailValidation($email)
+    {
+        // https://apilayer.com/marketplace/email_verification-api
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=".$email,
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: text/plain",
+            "apikey: iLPWB0XoDeJaRmz60eiEkz0uRMOMEmk8"
+        ),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET"
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $json_response = json_decode($response);
+
+        return $json_response->smtp_check;
+    }
+
     public function addSuperAdmin(Request $request)
     {
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()]);
+        }
+        if (!$this->emailValidation($request['email'])){
+            return response()->json(['errors'=>'Email is not valid!']);
         }
 
         $user = User::create([
@@ -60,6 +94,9 @@ class AuthController extends Controller
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()]);
+        }
+        if (!$this->emailValidation($request['email'])){
+            return response()->json(['errors'=>'Email is not valid!']);
         }
 
         $user = User::create([
@@ -99,10 +136,13 @@ class AuthController extends Controller
     }
 
     public function register(Request $request)
-    {
+    {   
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()]);
+        }
+        if (!$this->emailValidation($request['email'])){
+            return response()->json(['errors'=>'Email is not valid!']);
         }
 
         $user = User::create([
@@ -151,6 +191,17 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
         ]);
+    }
+
+    public function forgetPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+ 
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+     
+        return $status === Password::RESET_LINK_SENT ? "Ok" : "No";
     }
 
     public function changePassword(Request $request)

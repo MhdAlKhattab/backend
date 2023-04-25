@@ -14,7 +14,7 @@ class Investment extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['user_id', 'plan_name', 'amount', 'return_amount',
+    protected $fillable = ['user_id', 'plan_name', 'amount', 'return_percent',
      'return_period', 'number_returned', 'total_returned'];
 
     public function User(): BelongsTo

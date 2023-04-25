@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\WithdrawController;
+use App\Http\Controllers\InvestmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     /////////////////////////// Auth
     Route::post('/change-password',[AuthController::class,'changePassword']);
+    Route::post('/forget-password',[AuthController::class,'forgetPassword']);
     Route::get('/logout',[AuthController::class,'logout']);
     // Admin
     Route::post('/admin',[AuthController::class,'addAdmin']);
@@ -75,6 +77,15 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/accept-withdraw/{id}',[WithdrawController::class,'accept']);
     Route::post('/cancel-withdraw/{id}',[WithdrawController::class,'cancel']);
     Route::delete('/delete-withdraw/{id}',[WithdrawController::class,'destroy']);
+
+
+    /////////////////////////// Investment
+    // User
+    Route::get('/get-user-investments',[InvestmentController::class,'getUserInvestments']);
+    Route::post('/add-investment',[InvestmentController::class,'store']);
+    // Admin
+    Route::get('/get-all-investments',[InvestmentController::class,'getAllInvestments']);
+    Route::delete('/delete-investment/{id}',[InvestmentController::class,'destroy']);
 });
 
 

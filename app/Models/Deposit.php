@@ -15,7 +15,7 @@ class Deposit extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = ['user_id','photo', 'wallet', 'proccess_id', 'amount',
-                            'method', 'state'];
+                            'method', 'message', 'state'];
 
     public function User(): BelongsTo
     {

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('wallet');
             $table->double('amount');
             $table->string('method');
+            $table->double('charge');
+            $table->double('receivable');  
+            $table->longText('message')->default('Please Wait For Processing!');
             $table->integer('state')->default(0);
             $table->timestamps();
         });

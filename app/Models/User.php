@@ -58,8 +58,14 @@ class User extends Authenticatable
         return $this->hasMany(Withdraw::class,'user_id');
     }
 
+    public function investments(): HasMany
+    {
+        return $this->hasMany(Investment::class,'user_id');
+    }
+
     public function info(): HasOne
     {
         return $this->hasOne(Info::class);
     }
+
 }
