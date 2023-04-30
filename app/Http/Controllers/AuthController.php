@@ -21,6 +21,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:7',
             'confirm_password' => 'required|same:password',
+            'contury_number' => 'required|numeric',
             'phone_number' => 'required|numeric|digits:10'
         ]);
     }
@@ -62,7 +63,7 @@ class AuthController extends Controller
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!']);
+            return response()->json(['errors'=>'Email is not valid!'], 400);
         }
 
         $user = User::create([
@@ -71,6 +72,7 @@ class AuthController extends Controller
             'user_name' => $request['user_name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
+            'contury_number' => $request['contury_number'],
             'phone_number' => $request['phone_number'],
             'permission' => 2
         ]);
@@ -88,7 +90,7 @@ class AuthController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 2){
-            return response()->json(['data' => "Access Denied"]); 
+            return response()->json(['data' => "Access Denied"], 403); 
         }
 
         $validatedData = $this->validator($request->all());
@@ -96,7 +98,7 @@ class AuthController extends Controller
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!']);
+            return response()->json(['errors'=>'Email is not valid!'], 400);
         }
 
         $user = User::create([
@@ -105,6 +107,7 @@ class AuthController extends Controller
             'user_name' => $request['user_name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
+            'contury_number' => $request['contury_number'],
             'phone_number' => $request['phone_number'],
             'permission' => 1
         ]);
@@ -122,13 +125,13 @@ class AuthController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 2){
-            return response()->json(['data' => "Access Denied"]); 
+            return response()->json(['data' => "Access Denied"], 403); 
         }
         
         $user = User::find($id);
 
         if(!$user){
-            return response()->json(['data' => 'There is no admin with this id !']);
+            return response()->json(['data' => 'There is no admin with this id !'], 400);
         }
 
         $user->delete();
@@ -136,13 +139,13 @@ class AuthController extends Controller
     }
 
     public function register(Request $request)
-    {   
+    {
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         // if (!$this->emailValidation($request['email'])){
-        //     return response()->json(['errors'=>'Email is not valid!']);
+        //     return response()->json(['errors'=>'Email is not valid!'], 400);
         // }
 
         $user = User::create([
@@ -151,6 +154,7 @@ class AuthController extends Controller
             'user_name' => $request['user_name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
+            'contury_number' => $request['contury_number'],
             'phone_number' => $request['phone_number']
         ]);
         $user->save();
@@ -215,23 +219,23 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json(['errors'=>$validator->errors()]);
+            return response()->json(['errors'=>$validator->errors()], 400);
         }
 
         if(!Hash::check($request->old_password, $user->password)){
-            return response()->json(['errors'=>'The password is incorrect']);
+            return response()->json(['errors'=>'The password is incorrect'], 400);
         }
 
         $user->password = Hash::make($request['new_password']);
         $user->save();
 
-        return response()->json(['data' => 'change password done '],403);
+        return response()->json(['data' => 'change password done']);
     }
 
     public function logout () {
         $token = Auth::user()->token();
         $token->revoke();
         $response = ['message' => 'You have been successfully logged out!'];
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 }

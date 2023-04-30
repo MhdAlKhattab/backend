@@ -15,7 +15,7 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $deposits = Deposit::with('User')->orderBy('created_at','desc')->get();
@@ -26,7 +26,7 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $deposits = Deposit::with('User')->where('state', 0)->orderBy('created_at','desc')->get();
@@ -37,7 +37,7 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $deposits = Deposit::with('User')->where('state', 1)->orderBy('created_at','desc')->get();
@@ -48,7 +48,7 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
         
         $deposits = Deposit::with('User')->where('state', 2)->orderBy('created_at','desc')->get();
@@ -82,7 +82,7 @@ class DepositController extends Controller
     {
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
-            return response()->json(['errors'=>$validatedData->errors()]);
+            return response()->json(['errors'=>$validatedData->errors()], 400);
         }
 
         $deposit = Deposit::create([
@@ -126,17 +126,17 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
         
         $deposit = Deposit::find($id);
 
         if(!$deposit){
-            return response()->json(['data' => 'There is no deposit with this id !']);
+            return response()->json(['data' => 'There is no deposit with this id !'], 400);
         }
 
         if($deposit->state != 0){
-            return response()->json(['data' => 'You cant do that']);
+            return response()->json(['data' => 'You cant do that'], 400);
         }
 
         $deposit->state = 1;
@@ -155,17 +155,17 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $deposit = Deposit::find($id);
 
         if(!$deposit){
-            return response()->json(['data' => 'There is no deposit with this id !']);
+            return response()->json(['data' => 'There is no deposit with this id !'], 400);
         }
 
         if($deposit->state != 0){
-            return response()->json(['data' => 'You cant do that']);
+            return response()->json(['data' => 'You cant do that'], 400);
         }
 
         
@@ -181,13 +181,13 @@ class DepositController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $deposit = Deposit::find($id);
 
         if(!$deposit){
-            return response()->json(['data' => 'There is no deposit with this id !']);
+            return response()->json(['data' => 'There is no deposit with this id !'], 400);
         }
 
         $deposit->delete();

@@ -15,7 +15,7 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $withdraws = Withdraw::with('User')->orderBy('created_at','desc')->get();
@@ -26,7 +26,7 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $withdraws = Withdraw::with('User')->where('state', 0)->orderBy('created_at','desc')->get();
@@ -37,7 +37,7 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $withdraws = Withdraw::with('User')->where('state', 1)->orderBy('created_at','desc')->get();
@@ -48,7 +48,7 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
         
         $withdraws = Withdraw::with('User')->where('state', 2)->orderBy('created_at','desc')->get();
@@ -80,12 +80,12 @@ class WithdrawController extends Controller
     {
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
-            return response()->json(['errors'=>$validatedData->errors()]);
+            return response()->json(['errors'=>$validatedData->errors()], 400);
         }
 
         $info = Info::where('user_id', Auth::user()->id)->first();
         if($info->interest_balance < $request['amount']){
-            return response()->json(['data' => 'You dont have enough money!']);
+            return response()->json(['data' => 'You dont have enough money!'], 400);
         }
 
         $charge = ($request['amount'] * 2) / 100.0;
@@ -112,17 +112,17 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $withdraw = Withdraw::find($id);
 
         if(!$withdraw){
-            return response()->json(['data' => 'There is no withdraw with this id !']);
+            return response()->json(['data' => 'There is no withdraw with this id !'], 400);
         }
 
         if($withdraw->state != 0){
-            return response()->json(['data' => 'You cant do that']);
+            return response()->json(['data' => 'You cant do that'], 400);
         }
 
         $withdraw->state = 1;
@@ -136,17 +136,17 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $withdraw = Withdraw::find($id);
 
         if(!$withdraw){
-            return response()->json(['data' => 'There is no withdraw with this id !']);
+            return response()->json(['data' => 'There is no withdraw with this id !'], 400);
         }
 
         if($withdraw->state != 0){
-            return response()->json(['data' => 'You cant do that']);
+            return response()->json(['data' => 'You cant do that'], 400);
         }
 
         $withdraw->state = 2;
@@ -165,13 +165,13 @@ class WithdrawController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
         
         $withdraw = Withdraw::find($id);
 
         if(!$withdraw){
-            return response()->json(['data' => 'There is no withdraw with this id !']);
+            return response()->json(['data' => 'There is no withdraw with this id !'], 400);
         }
 
         $withdraw->delete();

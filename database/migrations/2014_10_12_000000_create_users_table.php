@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('user_name')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('contury_number');
             $table->string('phone_number');
-
             $table->integer('permission')->default(0);
 
             $table->timestamp('email_verified_at')->nullable();

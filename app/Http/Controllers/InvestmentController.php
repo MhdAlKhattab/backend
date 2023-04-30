@@ -15,7 +15,7 @@ class InvestmentController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $invests = Investment::with('User')->orderBy('created_at','desc')->get();
@@ -44,13 +44,13 @@ class InvestmentController extends Controller
     {
         $validatedData = $this->validator($request->all());
         if ($validatedData->fails())  {
-            return response()->json(['errors'=>$validatedData->errors()]);
+            return response()->json(['errors'=>$validatedData->errors()], 400);
         }
 
         $info = Info::where('user_id', Auth::user()->id)->first();
         if(($request['wallet'] == 'deposit' and $info->Deposit_balance < $request['amount']) or
             ($request['wallet'] == 'referral' and $info->referral_earning < $request['amount'])){
-            return response()->json(['data' => 'You dont have enough money!']);
+            return response()->json(['data' => 'You dont have enough money!'], 400);
         }
 
         $invest = Investment::create([
@@ -78,13 +78,13 @@ class InvestmentController extends Controller
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
-            return response()->json(['data' => "Access Denied"]);   
+            return response()->json(['data' => "Access Denied"], 403);   
         }
 
         $invest = Investment::find($id);
 
         if(!$invest){
-            return response()->json(['data' => 'There is no investment with this id !']);
+            return response()->json(['data' => 'There is no investment with this id !'], 400);
         }
 
         $invest->delete();
