@@ -60,18 +60,70 @@ class InvestmentController extends Controller
             'return_percent' => $request['return_percent'],
             'return_period' => $request['return_period'],
             'total_returned' => $request['total_returned'],
+            'wallet' => $request['wallet']
         ]);
         $invest->save();
 
-        if($request['wallet'] == 'deposit'){
+        return response()->json(['data' => $invest]);
+    }
+
+    public function accept($id)
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
+        
+        $invest = Investment::find($id);
+
+        if(!$invest){
+            return response()->json(['data' => 'There is no investment with this id !'], 400);
+        }
+
+        if($invest->state != 0){
+            return response()->json(['data' => 'You cant do that'], 400);
+        }
+
+        $invest->state = 1;
+        $invest->message = 'Process Statred';
+        $invest->save();
+
+        $info = Info::where('user_id', $invest->user_id)->first();
+        if($invest->wallet == 'deposit'){
             $info->Deposit_balance -= $invest->amount;
-        }elseif($request['wallet'] == 'referral'){
+        }elseif($invest->wallet == 'referral'){
             $info->referral_earning -= $invest->amount;
         }
         $info->total_invest += $invest->amount;
         $info->save();
 
-        return response()->json(['data' => $invest]);
+        return response()->json(['data' => "Investment Accept"]);
+    }
+
+    public function cancel($id, Request $request)
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
+
+        $invest = Investment::find($id);
+
+        if(!$invest){
+            return response()->json(['data' => 'There is no investment with this id !'], 400);
+        }
+
+        if($invest->state != 0){
+            return response()->json(['data' => 'You cant do that'], 400);
+        }
+
+        
+
+        $invest->state = 2;
+        $invest->message = $request['message'];
+        $invest->save();
+
+        return response()->json(['data' => "Investment Canceled"]);   
     }
 
     public function destroy($id)
