@@ -85,6 +85,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/add-investment',[InvestmentController::class,'store']);
     // Admin
     Route::get('/get-all-investments',[InvestmentController::class,'getAllInvestments']);
+    Route::post('/accept-investment/{id}',[InvestmentController::class,'accept']);
+    Route::post('/cancel-investment/{id}',[InvestmentController::class,'cancel']);
     Route::delete('/delete-investment/{id}',[InvestmentController::class,'destroy']);
 });
 
