@@ -78,7 +78,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/cancel-withdraw/{id}',[WithdrawController::class,'cancel']);
     Route::delete('/delete-withdraw/{id}',[WithdrawController::class,'destroy']);
 
-
+ 
     /////////////////////////// Investment
     // User
     Route::get('/get-user-investments',[InvestmentController::class,'getUserInvestments']);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('return_period');
             $table->integer('number_returned')->default(0);
             $table->integer('total_returned');
+            $table->string('wallet');
             $table->longText('message')->default('Please Wait For Processing!');
             $table->integer('state')->default(0);
             $table->timestamps();

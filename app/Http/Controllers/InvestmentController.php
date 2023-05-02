@@ -117,8 +117,6 @@ class InvestmentController extends Controller
             return response()->json(['data' => 'You cant do that'], 400);
         }
 
-        
-
         $invest->state = 2;
         $invest->message = $request['message'];
         $invest->save();
