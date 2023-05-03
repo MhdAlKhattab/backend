@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Investment;
 use App\Models\Info;
 use App\Models\User;
+use Carbon\Carbon;
 
 class InvestmentController extends Controller
 {
@@ -19,12 +20,53 @@ class InvestmentController extends Controller
         }
 
         $invests = Investment::with('User')->orderBy('created_at','desc')->get();
+
+        foreach($invests as $invest){
+            $period = $invest->return_period;
+            $invest_time = Carbon::parse($invest->last_update);
+            $now = Carbon::now();
+            $diff = $invest_time->diffInSeconds($now);
+
+            if($period == 'week' and $diff > 604800){
+                $diff = 604800;
+            }elseif($period == 'month' and $diff > 2628288){
+                $diff = 2628288;
+            }elseif($period == '6 month' and $diff > 15778463){
+                $diff = 15778463;
+            }elseif($period == 'year' and $diff > 31536000){
+                $diff = 31536000;
+            }
+            
+            $invest->spending_time = $diff;
+            $invest->save();
+        }
+
         return response()->json(['data' => $invests]);
     }
 
     public function getUserInvestments()
     {
         $invests = User::find(Auth::user()->id)->investments;
+
+        foreach($invests as $invest){
+            $period = $invest->return_period;
+            $invest_time = Carbon::parse($invest->last_update);
+            $now = Carbon::now();
+            $diff = $invest_time->diffInSeconds($now);
+
+            if($period == 'week' and $diff > 604800){
+                $diff = 604800;
+            }elseif($period == 'month' and $diff > 2628288){
+                $diff = 2628288;
+            }elseif($period == '6 month' and $diff > 15778463){
+                $diff = 15778463;
+            }elseif($period == 'year' and $diff > 31536000){
+                $diff = 31536000;
+            }
+            $invest->spending_time = $diff;
+            $invest->save();
+        }
+
         return response()->json(['data' => $invests]);
     }
 
@@ -34,7 +76,7 @@ class InvestmentController extends Controller
             'plan_name' => 'required|string',
             'amount' => 'required|numeric',
             'return_percent' => 'required|numeric',
-            'return_period' => 'required|string|in:week,month',
+            'return_period' => 'required|string|in:week,month,year',
             'total_returned' => 'required|numeric',
             'wallet' => 'required|string|in:deposit,referral',
         ]);
@@ -53,11 +95,14 @@ class InvestmentController extends Controller
             return response()->json(['data' => 'You dont have enough money!'], 400);
         }
 
+        $return_amount = ($request['amount'] * $request['return_percent']) / 100.0;
+
         $invest = Investment::create([
             'user_id' => Auth::user()->id,
             'plan_name' => $request['plan_name'],
             'amount' => $request['amount'],
             'return_percent' => $request['return_percent'],
+            'return_amount' => $return_amount,
             'return_period' => $request['return_period'],
             'total_returned' => $request['total_returned'],
             'wallet' => $request['wallet']
@@ -86,6 +131,7 @@ class InvestmentController extends Controller
 
         $invest->state = 1;
         $invest->message = 'Process Statred';
+        $invest->last_update = Carbon::now();
         $invest->save();
 
         $info = Info::where('user_id', $invest->user_id)->first();

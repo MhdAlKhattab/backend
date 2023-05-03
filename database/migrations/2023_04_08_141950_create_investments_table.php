@@ -17,12 +17,15 @@ return new class extends Migration
             $table->string('plan_name');
             $table->double('amount');
             $table->double('return_percent');
+            $table->double('return_amount');
             $table->string('return_period');
             $table->integer('number_returned')->default(0);
             $table->integer('total_returned');
             $table->string('wallet');
             $table->longText('message')->default('Please Wait For Processing!');
             $table->integer('state')->default(0);
+            $table->bigInteger('spending_time')->default(0);
+            $table->dateTime('last_update')->nullable();
             $table->timestamps();
         });
     }

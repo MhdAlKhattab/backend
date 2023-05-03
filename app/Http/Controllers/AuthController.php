@@ -62,9 +62,9 @@ class AuthController extends Controller
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
-        if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!'], 400);
-        }
+        // if (!$this->emailValidation($request['email'])){
+        //     return response()->json(['errors'=>'Email is not valid!'], 400);
+        // }
 
         $user = User::create([
             'first_name' => $request['first_name'],
@@ -97,9 +97,9 @@ class AuthController extends Controller
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
-        if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!'], 400);
-        }
+        // if (!$this->emailValidation($request['email'])){
+        //     return response()->json(['errors'=>'Email is not valid!'], 400);
+        // }
 
         $user = User::create([
             'first_name' => $request['first_name'],
