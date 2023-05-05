@@ -28,13 +28,13 @@ class InvestmentController extends Controller
             $diff = $invest_time->diffInSeconds($now);
 
             if($period == 'week' and $diff > 604800){
-                $diff = 604800;
+                $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
-                $diff = 2628288;
+                $diff = 2628287;
             }elseif($period == '6 month' and $diff > 15778463){
-                $diff = 15778463;
+                $diff = 15778462;
             }elseif($period == 'year' and $diff > 31536000){
-                $diff = 31536000;
+                $diff = 31535999;
             }
             
             $invest->spending_time = $diff;
@@ -55,13 +55,13 @@ class InvestmentController extends Controller
             $diff = $invest_time->diffInSeconds($now);
 
             if($period == 'week' and $diff > 604800){
-                $diff = 604800;
+                $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
-                $diff = 2628288;
+                $diff = 2628287;
             }elseif($period == '6 month' and $diff > 15778463){
-                $diff = 15778463;
+                $diff = 15778462;
             }elseif($period == 'year' and $diff > 31536000){
-                $diff = 31536000;
+                $diff = 31535999;
             }
             $invest->spending_time = $diff;
             $invest->save();

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use App\Models\User;
 use App\Models\Info;
+use Mail;
+use App\Mail\ForgetPasswordMail;
 
 class AuthController extends Controller
 {
@@ -199,13 +201,13 @@ class AuthController extends Controller
 
     public function forgetPassword(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
- 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-     
-        return $status === Password::RESET_LINK_SENT ? "Ok" : "No";
+        $mailData = [
+            'code' => 4545454545,
+        ];
+         
+        Mail::to('mohammadalkhatab123@gmail.com')->send(new ForgetPasswordMail($mailData));
+           
+        return "Email is sent successfully.";
     }
 
     public function changePassword(Request $request)

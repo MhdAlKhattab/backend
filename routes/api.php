@@ -31,6 +31,7 @@ Route::get('/test-online', function () {
 /////////////////////////// Auth
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
+Route::post('/forget-password',[AuthController::class,'forgetPassword']);
 // Admin
 Route::post('/super-admin',[AuthController::class,'addSuperAdmin']);
 
@@ -38,7 +39,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     
     /////////////////////////// Auth
     Route::post('/change-password',[AuthController::class,'changePassword']);
-    Route::post('/forget-password',[AuthController::class,'forgetPassword']);
     Route::get('/logout',[AuthController::class,'logout']);
     // Admin
     Route::post('/admin',[AuthController::class,'addAdmin']);
