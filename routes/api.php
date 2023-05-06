@@ -32,6 +32,7 @@ Route::get('/test-online', function () {
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/forget-password',[AuthController::class,'forgetPassword']);
+Route::post('/reset-password',[AuthController::class,'resetPassword']);
 // Admin
 Route::post('/super-admin',[AuthController::class,'addSuperAdmin']);
 
