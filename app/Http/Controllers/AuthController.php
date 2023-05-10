@@ -215,7 +215,7 @@ class AuthController extends Controller
 
         if(User::where('email', $email)->doesntExist()){
             return response()->json([
-                'errors' => 'User Does not Exists !'
+                'data' => 'User Does not Exists !'
             ], 400);
         }
 
@@ -254,7 +254,7 @@ class AuthController extends Controller
 
         if(!$passwordResets){
             return response()->json([
-                'errors' => 'Invalid Code !'
+                'data' => 'Invalid Code !'
             ], 400);
         }
 
@@ -284,7 +284,7 @@ class AuthController extends Controller
         }
 
         if(!Hash::check($request->old_password, $user->password)){
-            return response()->json(['errors'=>'The password is incorrect'], 400);
+            return response()->json(['data'=>'The password is incorrect'], 400);
         }
 
         $user->password = Hash::make($request['new_password']);
