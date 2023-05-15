@@ -108,7 +108,7 @@ class WithdrawController extends Controller
         return response()->json(['data' => $withdraw]);
     }
 
-    public function accept($id)
+    public function accept($id, Request $request)
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
@@ -126,7 +126,7 @@ class WithdrawController extends Controller
         }
 
         $withdraw->state = 1;
-        $withdraw->message = 'Process Finished';
+        $withdraw->message = $request['message'];
         $withdraw->save();
 
         return response()->json(['data' => "Withdraw Accept"]);

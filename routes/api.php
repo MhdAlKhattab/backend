@@ -31,6 +31,7 @@ Route::get('/test-online', function () {
 /////////////////////////// Auth
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
+Route::post('/admin-login',[AuthController::class,'adminLogin']);
 Route::post('/forget-password',[AuthController::class,'forgetPassword']);
 Route::post('/reset-password',[AuthController::class,'resetPassword']);
 // Admin

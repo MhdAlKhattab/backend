@@ -122,7 +122,7 @@ class DepositController extends Controller
         return response()->json(['data' => $deposit]);
     }
 
-    public function accept($id)
+    public function accept($id, Request $request)
     {
         $permission = Auth::user()->permission;
         if($permission != 1 and $permission != 2){
@@ -140,7 +140,7 @@ class DepositController extends Controller
         }
 
         $deposit->state = 1;
-        $deposit->message = 'Process Finished';
+        $deposit->message = $request['message'];
         $deposit->save();
 
         $info = Info::where('user_id', $deposit->user_id)->first();
