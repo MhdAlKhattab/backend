@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Investment;
 use App\Models\Info;
 use App\Models\User;
+use App\Models\Referral;
 use Carbon\Carbon;
 
 class InvestmentController extends Controller
@@ -283,6 +284,18 @@ class InvestmentController extends Controller
         }
         $info->total_invest += $invest->amount;
         $info->save();
+
+
+        $referral = Referral::where('user_referral', $invest->user_id)->first();
+        if($referral and !$referral->done){
+            $referral->benefit = 10;
+            $referral->done = 1;
+            $referral->save();
+
+            $user_info = Info::where('user_id', $referral->user_id)->first();
+            $user_info->referral_earning += 10;
+            $user_info->save();
+        }
 
         return response()->json(['data' => "Investment Accept"]);
     }

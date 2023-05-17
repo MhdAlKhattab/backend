@@ -8,6 +8,7 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReferralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +87,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/accept-withdraw/{id}',[WithdrawController::class,'accept']);
     Route::post('/cancel-withdraw/{id}',[WithdrawController::class,'cancel']);
     Route::delete('/delete-withdraw/{id}',[WithdrawController::class,'destroy']);
-
  
     /////////////////////////// Investment
     // User
@@ -101,6 +101,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/accept-investment/{id}',[InvestmentController::class,'accept']);
     Route::post('/cancel-investment/{id}',[InvestmentController::class,'cancel']);
     Route::delete('/delete-investment/{id}',[InvestmentController::class,'destroy']);
+
+    /////////////////////////// Referrals
+    Route::get('/get-all-referrals',[ReferralController::class,'getAllReferrals']);
+    Route::get('/get-user-referrals',[ReferralController::class,'getUserReferrals']);
+    Route::get('/get-user-benfit-referrals',[ReferralController::class,'getUserBenfitReferrals']);
+
 });
 
 

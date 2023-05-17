@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Mail\ForgetPasswordMail;
 use App\Models\User;
 use App\Models\Info;
+use App\Models\Referral;
 use Mail;
 
 class AuthController extends Controller
@@ -195,9 +196,19 @@ class AuthController extends Controller
         $user->save();
 
         $info = Info::create([
+            'referral_link' => 'https://www.forex.net/register.html?id=' . $user->id,
             'user_id' => $user->id,
         ]);
         $info->save();
+
+        if($request['referral'] != -1){
+            $referral = Referral::create([
+                'user_referral' => $user->id,
+                'user_id' => $request['referral'],
+            ]);
+            $referral->save();
+        }
+
 
         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
 

@@ -11,10 +11,10 @@ class UserController extends Controller
     public function getAllUsers(){
         $permission = Auth::user()->permission;
         if($permission != 2){
-            return response()->json(['data' => "Access Denied"], 403);   
+            return response()->json(['data' => "Access Denied"], 403);
         }
 
-        $users = User::orderBy('created_at','desc')->get();
+        $users = User::where('permission', '!=', 2)->orderBy('created_at','desc')->get();
 
         return response()->json(['data' => $users]);
     }
