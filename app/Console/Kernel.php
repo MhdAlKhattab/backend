@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
 
                 // week 604 800 sec
                 // month 2 628 288 sec
+                // 3 week 1 814 400 sec
                 // 6 month  15 778 463 sec
                 // year 31 536 000 sec
                 // (For Carbon Time) https://www.digitalocean.com/community/tutorials/easier-datetime-in-laravel-and-php-with-carbon
@@ -34,8 +35,9 @@ class Kernel extends ConsoleKernel
 
                 if(($period == 'week' and $diff > 604800) or
                 ($period == 'month' and $diff > 2628288) or
-                ($period == '6 month' and $diff > 15778463) or
-                ($period == 'year' and $diff > 31536000)
+                ($period == '3weeks' and $diff > 1814400) or
+                ($period == '6months' and $diff > 15778463) or
+                ($period == '12months' and $diff > 31536000)
                 ){
                     $invest->number_returned += 1;
                     $invest->last_update = $now;

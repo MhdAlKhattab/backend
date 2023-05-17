@@ -142,6 +142,37 @@ class AuthController extends Controller
         return response()->json(['data' => "Admin Deleted"]);
     }
 
+    public function adminLogin(Request $request)
+    {
+        if(Auth::attempt($request->only('email', 'password'))){
+
+            $user = User::where('email', $request['email'])->firstOrFail();
+            $permission = $user->permission;
+
+        }else if (Auth::attempt($request->only('user_name', 'password'))) {
+
+            $user = User::where('user_name', $request['user_name'])->firstOrFail();
+            $permission = $user->permission;
+
+        }else{
+            return response()->json([
+                'errors' => 'Invalid login details'
+            ], 401);
+        }
+
+        if($permission == 0){
+            return response()->json(['data' => "Access Denied"], 403); 
+        }
+
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'permission' => $permission,
+            'token_type' => 'Bearer',
+        ]);
+    }
+
     public function register(Request $request)
     {
         $validatedData = $this->validator($request->all());
@@ -172,38 +203,6 @@ class AuthController extends Controller
 
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
-    }
-
-
-    public function adminLogin(Request $request)
-    {
-        if(Auth::attempt($request->only('email', 'password'))){
-
-            $user = User::where('email', $request['email'])->firstOrFail();
-            $permission = $user->permission;
-
-        }else if (Auth::attempt($request->only('user_name', 'password'))) {
-
-            $user = User::where('user_name', $request['user_name'])->firstOrFail();
-            $permission = $user->permission;
-
-        }else{
-            return response()->json([
-                'errors' => 'Invalid login details'
-            ], 401);
-        }
-
-        if($permission == 0){
-            return response()->json(['data' => "Access Denied"], 403); 
-        }
-
-        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'permission' => $permission,
             'token_type' => 'Bearer',
         ]);
     }

@@ -31,9 +31,148 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '6 month' and $diff > 15778463){
+            }elseif($period == '3weeks' and $diff > 1814400){
+                $diff = 1814399;
+            }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
-            }elseif($period == 'year' and $diff > 31536000){
+            }elseif($period == '12months' and $diff > 31536000){
+                $diff = 31535999;
+            }
+            
+            $invest->spending_time = $diff;
+            $invest->save();
+        }
+
+        return response()->json(['data' => $invests]);
+    }
+
+
+    public function getPenddingInvestments()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
+
+        $invests = Investment::with('User')->where('state', 0)->orderBy('created_at','desc')->get();
+
+        foreach($invests as $invest){
+            $period = $invest->return_period;
+            $invest_time = Carbon::parse($invest->last_update);
+            $now = Carbon::now();
+            $diff = $invest_time->diffInSeconds($now);
+
+            if($period == 'week' and $diff > 604800){
+                $diff = 604799;
+            }elseif($period == 'month' and $diff > 2628288){
+                $diff = 2628287;
+            }elseif($period == '3weeks' and $diff > 1814400){
+                $diff = 1814399;
+            }elseif($period == '6months' and $diff > 15778463){
+                $diff = 15778462;
+            }elseif($period == '12months' and $diff > 31536000){
+                $diff = 31535999;
+            }
+            
+            $invest->spending_time = $diff;
+            $invest->save();
+        }
+
+        return response()->json(['data' => $invests]);
+    }
+
+    public function getProgressedInvestments()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
+
+        $invests = Investment::with('User')->where('state', 1)->orderBy('created_at','desc')->get();
+
+        foreach($invests as $invest){
+            $period = $invest->return_period;
+            $invest_time = Carbon::parse($invest->last_update);
+            $now = Carbon::now();
+            $diff = $invest_time->diffInSeconds($now);
+
+            if($period == 'week' and $diff > 604800){
+                $diff = 604799;
+            }elseif($period == 'month' and $diff > 2628288){
+                $diff = 2628287;
+            }elseif($period == '3weeks' and $diff > 1814400){
+                $diff = 1814399;
+            }elseif($period == '6months' and $diff > 15778463){
+                $diff = 15778462;
+            }elseif($period == '12months' and $diff > 31536000){
+                $diff = 31535999;
+            }
+            
+            $invest->spending_time = $diff;
+            $invest->save();
+        }
+
+        return response()->json(['data' => $invests]);
+    }
+
+    public function getCompletedInvestments()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
+
+        $invests = Investment::with('User')->where('state', 3)->orderBy('created_at','desc')->get();
+
+        foreach($invests as $invest){
+            $period = $invest->return_period;
+            $invest_time = Carbon::parse($invest->last_update);
+            $now = Carbon::now();
+            $diff = $invest_time->diffInSeconds($now);
+
+            if($period == 'week' and $diff > 604800){
+                $diff = 604799;
+            }elseif($period == 'month' and $diff > 2628288){
+                $diff = 2628287;
+            }elseif($period == '3weeks' and $diff > 1814400){
+                $diff = 1814399;
+            }elseif($period == '6months' and $diff > 15778463){
+                $diff = 15778462;
+            }elseif($period == '12months' and $diff > 31536000){
+                $diff = 31535999;
+            }
+            
+            $invest->spending_time = $diff;
+            $invest->save();
+        }
+
+        return response()->json(['data' => $invests]);
+    }
+
+    public function getCanceledInvestments()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
+
+        $invests = Investment::with('User')->where('state', 2)->orderBy('created_at','desc')->get();
+
+        foreach($invests as $invest){
+            $period = $invest->return_period;
+            $invest_time = Carbon::parse($invest->last_update);
+            $now = Carbon::now();
+            $diff = $invest_time->diffInSeconds($now);
+
+            if($period == 'week' and $diff > 604800){
+                $diff = 604799;
+            }elseif($period == 'month' and $diff > 2628288){
+                $diff = 2628287;
+            }elseif($period == '3weeks' and $diff > 1814400){
+                $diff = 1814399;
+            }elseif($period == '6months' and $diff > 15778463){
+                $diff = 15778462;
+            }elseif($period == '12months' and $diff > 31536000){
                 $diff = 31535999;
             }
             
@@ -58,9 +197,11 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '6 month' and $diff > 15778463){
+            }elseif($period == '3weeks' and $diff > 1814400){
+                $diff = 1814399;
+            }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
-            }elseif($period == 'year' and $diff > 31536000){
+            }elseif($period == '12months' and $diff > 31536000){
                 $diff = 31535999;
             }
             $invest->spending_time = $diff;
@@ -76,7 +217,7 @@ class InvestmentController extends Controller
             'plan_name' => 'required|string',
             'amount' => 'required|numeric',
             'return_percent' => 'required|numeric',
-            'return_period' => 'required|string|in:week,month,year',
+            'return_period' => 'required|string|in:week,month,3weeks,6months,12months',
             'total_returned' => 'required|numeric',
             'wallet' => 'required|string|in:deposit,referral',
         ]);

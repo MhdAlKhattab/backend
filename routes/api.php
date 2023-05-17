@@ -7,6 +7,7 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     // Admin
     Route::post('/admin',[AuthController::class,'addAdmin']);
     Route::delete('/admin/{id}',[AuthController::class,'deleteAdmin']);
+
+
+    /////////////////////////// User
+    Route::get('/get-all-users',[UserController::class,'getAllUsers']);
+    Route::get('/get-normal-users',[UserController::class,'getNormalUsers']);
+    Route::get('/get-admin-users',[UserController::class,'getAdminUsers']);
 
 
     /////////////////////////// Info
@@ -87,6 +94,10 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/add-investment',[InvestmentController::class,'store']);
     // Admin
     Route::get('/get-all-investments',[InvestmentController::class,'getAllInvestments']);
+    Route::get('/get-pendding-investments',[InvestmentController::class,'getPenddingInvestments']);
+    Route::get('/get-progress-investments',[InvestmentController::class,'getProgressedInvestments']);
+    Route::get('/get-complete-investments',[InvestmentController::class,'getCompletedInvestments']);
+    Route::get('/get-cancele-investments',[InvestmentController::class,'getCanceledInvestments']);
     Route::post('/accept-investment/{id}',[InvestmentController::class,'accept']);
     Route::post('/cancel-investment/{id}',[InvestmentController::class,'cancel']);
     Route::delete('/delete-investment/{id}',[InvestmentController::class,'destroy']);
