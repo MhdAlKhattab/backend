@@ -109,11 +109,9 @@ class DepositController extends Controller
             $filenameToStore = $filename.'_'.time().'.'.$extension;
 
             // Uplaod image
-            $path = $request->file('photo')->storeAs('public/deposits/images/'.Auth::user()->id, $filenameToStore);
+            $path = $request->file('photo')->storeAs('public/deposit_images/', $filenameToStore);
 
             $deposit->photo = $filenameToStore;
-
-            // <img src="/storage/deposits/images/{{$deposit->user_id}}/{{$deposit->photo}}">
 
         }
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\WithdrawController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\StatisticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,10 @@ Route::group(['middleware' => 'auth:api'], function(){
 
     /////////////////////////// Info
     Route::get('/info',[InfoController::class,'index']);
+
+
+    /////////////////////////// Statistics
+    Route::get('/get-statistics',[StatisticController::class,'getStatistics']);
 
 
     /////////////////////////// Deposit

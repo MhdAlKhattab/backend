@@ -16,17 +16,13 @@ class ReferralController extends Controller
             return response()->json(['data' => "Access Denied"], 403);
         }
 
-        // $referrals = Referral::from( 'referrals as ref' )
-        // ->join('users', 'ref.user_id', '=', 'users.id')
-        // ->select('ref.user_referral', 'ref.benefit',
-        //  'ref.done', 'ref.updated_at','users.first_name AS user_first_name',
-        // 'users.last_name AS user_last_name', 'users.email AS user_email')
-        //  ->join('users', 'user_email', '=', 'users.email')
-        // ->get();
-
-        $referrals = Referral::with('User')->get();
-        // ->join('users', 'ref.user_id', '=', 'users.id')
-
+        $referrals = Referral::from( 'referrals as ref' )
+        ->join('users', 'ref.user_referral', '=', 'users.id')
+        ->select('ref.user_id', 'ref.user_referral','ref.benefit',
+         'ref.done', 'ref.updated_at','users.first_name AS referral_first_name',
+        'users.last_name AS referral_last_name', 'users.email AS referral_email')
+        ->with('User:id,first_name,last_name,email')
+        ->get();
 
         return response()->json(['data' => $referrals]);
     }
