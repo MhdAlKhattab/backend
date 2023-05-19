@@ -288,12 +288,23 @@ class InvestmentController extends Controller
 
         $referral = Referral::where('user_referral', $invest->user_id)->first();
         if($referral and !$referral->done){
-            $referral->benefit = 10;
+            $amount = 0;
+            if($invest->amount >= 50 and $invest->amount <= 499){
+                $amount = 10;
+            }elseif($invest->amount >= 500 and $invest->amount <= 999){
+                $amount = 15;
+            }elseif($invest->amount >= 1000 and $invest->amount <= 2999){
+                $amount = 20;
+            }elseif($invest->amount >= 3000){
+                $amount = 25;
+            }
+            
+            $referral->benefit = $amount;
             $referral->done = 1;
             $referral->save();
 
             $user_info = Info::where('user_id', $referral->user_id)->first();
-            $user_info->referral_earning += 10;
+            $user_info->referral_earning += $amount;
             $user_info->save();
         }
 
