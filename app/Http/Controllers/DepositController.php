@@ -73,7 +73,7 @@ class DepositController extends Controller
             'wallet' => 'required|string',
             'proccess_id' => 'required|string',
             'amount' => 'required|numeric',
-            'method' => 'required|string|in:payeer,perfect',
+            'method' => 'required|string',
             'photo' => ['required', 'image','mimes:jpeg,jpg,png'],
         ]);
     }

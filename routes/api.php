@@ -10,6 +10,7 @@ use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,9 +109,20 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::delete('/delete-investment/{id}',[InvestmentController::class,'destroy']);
 
     /////////////////////////// Referrals
-    Route::get('/get-all-referrals',[ReferralController::class,'getAllReferrals']);
+    // User
     Route::get('/get-user-referrals',[ReferralController::class,'getUserReferrals']);
     Route::get('/get-user-benfit-referrals',[ReferralController::class,'getUserBenfitReferrals']);
+    // Admin
+    Route::get('/get-all-referrals',[ReferralController::class,'getAllReferrals']);
+
+    /////////////////////////// Setting
+    // Admin
+    Route::post('/deposit-on',[SettingController::class,'depositTurnOn']);
+    Route::post('/deposit-off',[SettingController::class,'depositTurnOff']);
+    Route::post('/withdraw-on',[SettingController::class,'withdrawTurnOn']);
+    Route::post('/withdraw-off',[SettingController::class,'withdrawTurnOff']);
+    Route::post('/invest-on',[SettingController::class,'investTurnOn']);
+    Route::post('/invest-off',[SettingController::class,'investTurnOff']);
 
 });
 

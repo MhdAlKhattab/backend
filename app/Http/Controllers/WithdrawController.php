@@ -72,7 +72,7 @@ class WithdrawController extends Controller
         return Validator::make($data, [
             'wallet' => 'required|string',
             'amount' => 'required|numeric',
-            'method' => 'required|string|in:payeer,perfect',
+            'method' => 'required|string',
         ]);
     }
 

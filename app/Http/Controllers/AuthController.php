@@ -83,6 +83,8 @@ class AuthController extends Controller
         ]);
         $user->save();
 
+        app('App\Http\Controllers\SettingController')->initSettings();
+
         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
 
         return response()->json([
@@ -177,12 +179,17 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validatedData = $this->validator($request->all());
-        if ($validatedData->fails())  {
+        if ($validatedData->fails()) {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         // if (!$this->emailValidation($request['email'])){
         //     return response()->json(['errors'=>'Email is not valid!'], 400);
         // }
+
+        $referral_user = User::find($request['referral']);
+        if (!$referral_user or $referral_user->permission != 0){
+            return response()->json(['data' => "Access Denied"], 403);   
+        }
 
         $user = User::create([
             'first_name' => $request['first_name'],

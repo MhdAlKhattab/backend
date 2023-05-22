@@ -22,36 +22,36 @@ class StatisticController extends Controller
         $num_normal_users = count(User::where('permission', '=', 0)->get());
 
 
-        $num_pendding_deposits = count(Deposit::where('state', '=', 0)->get());
-        $num_complete_deposits = count(Deposit::where('state', '=', 1)->get());
-        $num_canceled_deposits = count(Deposit::where('state', '=', 2)->get());
+        $total_pendding_deposits = Deposit::where('state', '=', 0)->sum('amount');
+        $total_complete_deposits = Deposit::where('state', '=', 1)->sum('amount');
+        $total_canceled_deposits = Deposit::where('state', '=', 2)->sum('amount');
 
-        $num_pendding_withdraws = count(Withdraw::where('state', '=', 0)->get());
-        $num_complete_withdraws = count(Withdraw::where('state', '=', 1)->get());
-        $num_canceled_withdraws = count(Withdraw::where('state', '=', 2)->get());
+        $total_pendding_withdraws = Withdraw::where('state', '=', 0)->sum('amount');
+        $total_complete_withdraws = Withdraw::where('state', '=', 1)->sum('amount');
+        $total_canceled_withdraws = Withdraw::where('state', '=', 2)->sum('amount');
 
-        $num_pendding_invest = count(Investment::where('state', '=', 0)->get());
-        $num_progress_invest = count(Investment::where('state', '=', 1)->get());
-        $num_canceled_invest = count(Investment::where('state', '=', 2)->get());
-        $num_complete_invest = count(Investment::where('state', '=', 3)->get());
+        $total_pendding_invest = Investment::where('state', '=', 0)->sum('amount');
+        $total_progress_invest = Investment::where('state', '=', 1)->sum('amount');
+        $total_canceled_invest = Investment::where('state', '=', 2)->sum('amount');
+        $total_complete_invest = Investment::where('state', '=', 3)->sum('amount');
 
 
         return response()->json(['data' => [
             'num_admin_users' => $num_admin_users,
             'num_normal_users' => $num_normal_users,
 
-            'num_pendding_deposits' => $num_pendding_deposits,
-            'num_complete_deposits' => $num_complete_deposits,
-            'num_canceled_deposits' => $num_canceled_deposits,
+            'total_pendding_deposits' => $total_pendding_deposits,
+            'total_complete_deposits' => $total_complete_deposits,
+            'total_canceled_deposits' => $total_canceled_deposits,
 
-            'num_pendding_withdraws' => $num_pendding_withdraws,
-            'num_complete_withdraws' => $num_complete_withdraws,
-            'num_canceled_withdraws' => $num_canceled_withdraws,
+            'total_pendding_withdraws' => $total_pendding_withdraws,
+            'total_complete_withdraws' => $total_complete_withdraws,
+            'total_canceled_withdraws' => $total_canceled_withdraws,
 
-            'num_pendding_invest' => $num_pendding_invest,
-            'num_progress_invest' => $num_progress_invest,
-            'num_canceled_invest' => $num_canceled_invest,
-            'num_complete_invest' => $num_complete_invest,
+            'total_pendding_invest' => $total_pendding_invest,
+            'total_progress_invest' => $total_progress_invest,
+            'total_canceled_invest' => $total_canceled_invest,
+            'total_complete_invest' => $total_complete_invest,
             ]]);
     }
 }
