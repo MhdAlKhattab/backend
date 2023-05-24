@@ -123,6 +123,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/withdraw-off',[SettingController::class,'withdrawTurnOff']);
     Route::post('/invest-on',[SettingController::class,'investTurnOn']);
     Route::post('/invest-off',[SettingController::class,'investTurnOff']);
+    Route::get('/get-deposit-state',[SettingController::class,'getDepositState']);
+    Route::get('/get-withdraw-state',[SettingController::class,'getWithdrawState']);
+    Route::get('/get-invest-state',[SettingController::class,'getInvestState']);
 
 });
 

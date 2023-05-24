@@ -26,6 +26,42 @@ class SettingController extends Controller
         }
     }
 
+    public function getDepositState()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);
+        }
+
+        $state = Setting::where('name', '=','allow_deposit')->first();
+
+        return response()->json(['data' => $state->value]);
+    }
+
+    public function getWithdrawState()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);
+        }
+        
+        $state = Setting::where('name', '=','allow_withdraw')->first();
+
+        return response()->json(['data' => $state->value]);
+    }
+
+    public function getInvestState()
+    {
+        $permission = Auth::user()->permission;
+        if($permission != 1 and $permission != 2){
+            return response()->json(['data' => "Access Denied"], 403);
+        }
+        
+        $state = Setting::where('name', '=','allow_investment')->first();
+
+        return response()->json(['data' => $state->value]);
+    }
+
     public function depositTurnOn()
     {
         $permission = Auth::user()->permission;
