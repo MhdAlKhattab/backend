@@ -186,9 +186,11 @@ class AuthController extends Controller
         //     return response()->json(['errors'=>'Email is not valid!'], 400);
         // }
 
-        $referral_user = User::find($request['referral']);
-        if (!$referral_user or $referral_user->permission != 0){
-            return response()->json(['data' => "Access Denied"], 403);   
+        if ($request['referral'] != -1){
+            $referral_user = User::find($request['referral']);
+            if (!$referral_user or $referral_user->permission != 0){
+                return response()->json(['data' => "Access Denied"], 403);   
+            }
         }
 
         $user = User::create([
