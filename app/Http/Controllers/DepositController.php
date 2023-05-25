@@ -114,7 +114,6 @@ class DepositController extends Controller
             $deposit->photo = $filenameToStore;
 
         }
-
         $deposit->save();
 
         return response()->json(['data' => $deposit]);
@@ -165,8 +164,6 @@ class DepositController extends Controller
         if($deposit->state != 0){
             return response()->json(['data' => 'You cant do that'], 400);
         }
-
-        
 
         $deposit->state = 2;
         $deposit->message = $request['message'];

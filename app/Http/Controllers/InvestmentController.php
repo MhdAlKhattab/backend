@@ -251,6 +251,15 @@ class InvestmentController extends Controller
         ]);
         $invest->save();
 
+        $info = Info::where('user_id', $invest->user_id)->first();
+        if($invest->wallet == 'deposit'){
+            $info->Deposit_balance -= $invest->amount;
+        }elseif($invest->wallet == 'referral'){
+            $info->referral_earning -= $invest->amount;
+        }
+        $info->total_invest += $invest->amount;
+        $info->save();
+
         return response()->json(['data' => $invest]);
     }
 
@@ -275,15 +284,6 @@ class InvestmentController extends Controller
         $invest->message = 'Process Statred';
         $invest->last_update = Carbon::now();
         $invest->save();
-
-        $info = Info::where('user_id', $invest->user_id)->first();
-        if($invest->wallet == 'deposit'){
-            $info->Deposit_balance -= $invest->amount;
-        }elseif($invest->wallet == 'referral'){
-            $info->referral_earning -= $invest->amount;
-        }
-        $info->total_invest += $invest->amount;
-        $info->save();
 
 
         $referral = Referral::where('user_referral', $invest->user_id)->first();
@@ -331,6 +331,16 @@ class InvestmentController extends Controller
         $invest->state = 2;
         $invest->message = $request['message'];
         $invest->save();
+
+
+        $info = Info::where('user_id', $invest->user_id)->first();
+        if($invest->wallet == 'deposit'){
+            $info->Deposit_balance += $invest->amount;
+        }elseif($invest->wallet == 'referral'){
+            $info->referral_earning += $invest->amount;
+        }
+        $info->total_invest -= $invest->amount;
+        $info->save();
 
         return response()->json(['data' => "Investment Canceled"]);   
     }
