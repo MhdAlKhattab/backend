@@ -203,7 +203,7 @@ class AuthController extends Controller
         $user->save();
 
         $info = Info::create([
-            'referral_link' => 'https://www.forex.net/register.html?id=' . $user->id,
+            'referral_link' => 'https://www.forexrobotai.com/register.html?id=' . $user->id,
             'user_id' => $user->id,
         ]);
         $info->save();
