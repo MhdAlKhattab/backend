@@ -52,13 +52,7 @@ class Kernel extends ConsoleKernel
                     }
                     $invest->save();
                 }
-
-                // info($invest_time);
-                // info($invest_time->subSeconds(50));
-                // info($now);
-                // info($diff);
             }
-            // info($investments);
         })->hourly();
     }
 

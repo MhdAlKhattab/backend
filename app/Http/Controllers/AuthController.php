@@ -41,7 +41,7 @@ class AuthController extends Controller
         CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=".$email,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: text/plain",
-            "apikey: iLPWB0XoDeJaRmz60eiEkz0uRMOMEmk8"
+            "apikey: mP1Qri9LcC1tFmZKmktOmHTmECucWBkj"
         ),
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
@@ -67,9 +67,9 @@ class AuthController extends Controller
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
-        // if (!$this->emailValidation($request['email'])){
-        //     return response()->json(['errors'=>'Email is not valid!'], 400);
-        // }
+        if (!$this->emailValidation($request['email'])){
+            return response()->json(['errors'=>'Email is not valid!'], 400);
+        }
 
         $user = User::create([
             'first_name' => $request['first_name'],
@@ -104,9 +104,9 @@ class AuthController extends Controller
         if ($validatedData->fails())  {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
-        // if (!$this->emailValidation($request['email'])){
-        //     return response()->json(['errors'=>'Email is not valid!'], 400);
-        // }
+        if (!$this->emailValidation($request['email'])){
+            return response()->json(['errors'=>'Email is not valid!'], 400);
+        }
 
         $user = User::create([
             'first_name' => $request['first_name'],
@@ -182,13 +182,15 @@ class AuthController extends Controller
         if ($validatedData->fails()) {
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
-        // if (!$this->emailValidation($request['email'])){
-        //     return response()->json(['errors'=>'Email is not valid!'], 400);
-        // }
+        if (!$this->emailValidation($request['email'])){
+            return response()->json(['errors'=>'Email is not valid!'], 400);
+        }
 
-        $referral_user = User::find($request['referral']);
-        if (!$referral_user or $referral_user->permission != 0){
-            return response()->json(['data' => "You Can Not Do That!"], 400);   
+        if($request['referral'] != -1){
+            $referral_user = User::find($request['referral']);
+            if (!$referral_user or $referral_user->permission != 0){
+                return response()->json(['data' => "You Can Not Do That!"], 400); 
+            }
         }
 
         $user = User::create([
