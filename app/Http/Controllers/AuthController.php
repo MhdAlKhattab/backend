@@ -68,7 +68,7 @@ class AuthController extends Controller
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!'], 400);
+            return response()->json(['data'=>'Email is not valid!'], 400);
         }
 
         $user = User::create([
@@ -105,7 +105,7 @@ class AuthController extends Controller
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!'], 400);
+            return response()->json(['data'=>'Email is not valid!'], 400);
         }
 
         $user = User::create([
@@ -183,7 +183,7 @@ class AuthController extends Controller
             return response()->json(['errors'=>$validatedData->errors()], 400);
         }
         if (!$this->emailValidation($request['email'])){
-            return response()->json(['errors'=>'Email is not valid!'], 400);
+            return response()->json(['data'=>'Email is not valid!'], 400);
         }
 
         if($request['referral'] != -1){
