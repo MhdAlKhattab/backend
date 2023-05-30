@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
 
                 if(($period == 'week' and $diff > 604800) or
                 ($period == 'month' and $diff > 2628288) or
-                ($period == '3weeks' and $diff > 1814400) or
+                ($period == '3months' and $diff > 7884864) or
                 ($period == '6months' and $diff > 15778463) or
                 ($period == '12months' and $diff > 31536000)
                 ){

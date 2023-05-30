@@ -32,8 +32,8 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '3weeks' and $diff > 1814400){
-                $diff = 1814399;
+            }elseif($period == '3months' and $diff > 7884864){
+                $diff = 7884863;
             }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
             }elseif($period == '12months' and $diff > 31536000){
@@ -67,8 +67,8 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '3weeks' and $diff > 1814400){
-                $diff = 1814399;
+            }elseif($period == '3months' and $diff > 7884864){
+                $diff = 7884863;
             }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
             }elseif($period == '12months' and $diff > 31536000){
@@ -101,8 +101,8 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '3weeks' and $diff > 1814400){
-                $diff = 1814399;
+            }elseif($period == '3months' and $diff > 7884864){
+                $diff = 7884863;
             }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
             }elseif($period == '12months' and $diff > 31536000){
@@ -135,8 +135,8 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '3weeks' and $diff > 1814400){
-                $diff = 1814399;
+            }elseif($period == '3months' and $diff > 7884864){
+                $diff = 7884863;
             }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
             }elseif($period == '12months' and $diff > 31536000){
@@ -169,8 +169,8 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '3weeks' and $diff > 1814400){
-                $diff = 1814399;
+            }elseif($period == '3months' and $diff > 7884864){
+                $diff = 7884863;
             }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
             }elseif($period == '12months' and $diff > 31536000){
@@ -198,8 +198,8 @@ class InvestmentController extends Controller
                 $diff = 604799;
             }elseif($period == 'month' and $diff > 2628288){
                 $diff = 2628287;
-            }elseif($period == '3weeks' and $diff > 1814400){
-                $diff = 1814399;
+            }elseif($period == '3months' and $diff > 7884864){
+                $diff = 7884863;
             }elseif($period == '6months' and $diff > 15778463){
                 $diff = 15778462;
             }elseif($period == '12months' and $diff > 31536000){
@@ -218,7 +218,7 @@ class InvestmentController extends Controller
             'plan_name' => 'required|string',
             'amount' => 'required|numeric',
             'return_percent' => 'required|numeric',
-            'return_period' => 'required|string|in:week,month,3weeks,6months,12months',
+            'return_period' => 'required|string|in:week,month,3months,6months,12months',
             'total_returned' => 'required|numeric',
             'wallet' => 'required|string|in:deposit,referral',
         ]);
