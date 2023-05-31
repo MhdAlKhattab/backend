@@ -27,7 +27,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:7',
             'confirm_password' => 'required|same:password',
             'contury_number' => 'required|numeric',
-            'phone_number' => 'required|numeric|digits:10'
+            'phone_number' => 'required|numeric'
         ]);
     }
 
