@@ -42,13 +42,13 @@ class Kernel extends ConsoleKernel
                     $invest->number_returned += 1;
                     $invest->last_update = $now;
 
+                    $info = Info::where('user_id', $invest->user_id)->first();
+                    $info->interest_balance += $invest->return_amount;
+                    $info->save();
+
                     if($invest->number_returned == $invest->total_returned){
                         $invest->message = 'Process Finished';
                         $invest->state = 3;
-
-                        $info = Info::where('user_id', $invest->user_id)->first();
-                        $info->interest_balance += $invest->total_returned * $invest->return_amount;
-                        $info->save();
                     }
                     $invest->save();
                 }
